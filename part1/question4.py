@@ -27,6 +27,10 @@ sql_pets_owned_by_nobody = """
 Your SQL here.
 
 """
+SELECT name, species, age
+FROM pets
+WHERE owner_id IS NULL;
+"""
 
 # Part 4.B:
 # Write SQL to select how the number of pets are older than their owners. 
@@ -37,6 +41,11 @@ sql_pets_older_than_owner = """
 Your SQL here.
 
 """
+SELECT COUNT(*) AS count
+FROM pets
+WHERE age > (SELECT age FROM owners WHERE owners.id = pets.owner_id);
+"""
+
 
 # Part 4.C: BONUS CHALLENGE! 
 # Write SQL to select the pets that are owned by Bessie and nobody else.
@@ -45,4 +54,10 @@ sql_only_owned_by_bessie = """
 
 Your SQL here.
 
+"""
+SELECT o.name AS owner_name, p.name AS pet_name, p.species
+FROM pets p
+JOIN owners o ON p.owner_id = o.id
+WHERE o.name = 'Bessie'
+AND NOT EXISTS (SELECT 1 FROM pets WHERE owner_id != o.id);
 """
